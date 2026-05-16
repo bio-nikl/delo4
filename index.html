@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <title>Дело № 4 · Мария Порва</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #080705;
+      background-image: 
+        radial-gradient(circle at 30% 40%, rgba(100, 80, 50, 0.12) 0%, transparent 40%),
+        radial-gradient(circle at 70% 60%, rgba(60, 45, 25, 0.15) 0%, transparent 45%),
+        repeating-linear-gradient(0deg, rgba(180, 160, 120, 0.04) 0px, rgba(180, 160, 120, 0.04) 1px, transparent 1px, transparent 3px),
+        radial-gradient(rgba(150, 120, 70, 0.06) 1px, transparent 1px);
+      background-size: 100% 100%, 100% 100%, 100% 8px, 35px 35px;
+      font-family: 'Special Elite', 'Courier New', 'Consolas', monospace;
+      color: #d4c5a2;
+      padding: 2rem 1.5rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      position: relative;
+    }
+
+    /* Эффект виньетки и потертостей */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(ellipse at 30% 30%, rgba(100, 75, 40, 0.2) 0%, transparent 50%),
+                  radial-gradient(ellipse at 80% 80%, rgba(50, 40, 25, 0.25) 0%, transparent 55%),
+                  radial-gradient(ellipse at 10% 90%, rgba(0, 0, 0, 0.4) 0%, transparent 40%);
+      pointer-events: none;
+      z-index: 0;
+      animation: vignettePulse 8s infinite alternate;
+    }
+
+    @keyframes vignettePulse {
+      0% { opacity: 0.9; }
+      100% { opacity: 1; }
+    }
+
+    .case-board {
+      max-width: 980px;
+      width: 100%;
+      background: rgba(18, 15, 10, 0.85);
+      backdrop-filter: blur(16px);
+      border: 1px solid #5e513a;
+      box-shadow: 
+        0 25px 60px rgba(0,0,0,0.8), 
+        inset 0 0 40px rgba(140, 100, 40, 0.1),
+        0 0 0 1px rgba(200, 170, 100, 0.15);
+      padding: 2.5rem 2.8rem;
+      position: relative;
+      z-index: 2;
+      border-radius: 4px;
+      display: flex;
+      flex-direction: column;
+      gap: 2.4rem;
+      transition: all 0.3s ease;
+    }
+
+    /* Декоративные скобы */
+    .case-board::before,
+    .case-board::after {
+      content: "◈";
+      position: absolute;
+      color: #b89b6b;
+      font-size: 2rem;
+      opacity: 0.6;
+      text-shadow: 0 0 12px #7a5c32, 0 0 25px #4a3520;
+      filter: drop-shadow(0 2px 4px #00000080);
+      transition: all 0.5s ease;
+    }
+    .case-board::before {
+      top: -15px;
+      left: 20px;
+    }
+    .case-board::after {
+      bottom: -15px;
+      right: 20px;
+      transform: rotate(180deg);
+    }
+
+    .case-board:hover::before,
+    .case-board:hover::after {
+      color: #d4b87a;
+      text-shadow: 0 0 20px #b8943e, 0 0 35px #6b4e2a;
+    }
+
+    /* Заголовок дела */
+    .case-header {
+      border-bottom: 2px dashed #6b5a3e;
+      padding-bottom: 1.4rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: baseline;
+      position: relative;
+    }
+
+    .case-header::after {
+      content: "";
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, #b8943e40, #b8943e80, #b8943e40, transparent);
+    }
+
+    .case-id {
+      font-size: 1.7rem;
+      font-weight: 700;
+      letter-spacing: 4px;
+      color: #d4b87a;
+      text-transform: uppercase;
+      background: #1e1a14;
+      padding: 0.3rem 1.2rem;
+      border: 1px solid #6b5a38;
+      border-radius: 3px;
+      box-shadow: 0 0 18px rgba(180, 140, 70, 0.35), inset 0 0 8px rgba(0,0,0,0.5);
+      text-shadow: 0 0 10px #7a6230;
+      animation: caseIdGlow 4s infinite alternate;
+    }
+
+    @keyframes caseIdGlow {
+      0% { box-shadow: 0 0 15px rgba(180, 140, 70, 0.3), inset 0 0 8px rgba(0,0,0,0.5); }
+      100% { box-shadow: 0 0 25px rgba(200, 160, 80, 0.5), inset 0 0 12px rgba(0,0,0,0.6); }
+    }
+
+    .stamp {
+      font-size: 0.9rem;
+      color: #9a845b;
+      border: 1px solid #5a4a2e;
+      padding: 0.4rem 1.2rem;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      transform: rotate(-1.5deg);
+      background: rgba(25, 20, 12, 0.8);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+      font-weight: 500;
+    }
+
+    h1 {
+      font-size: 2.6rem;
+      font-weight: 400;
+      text-transform: uppercase;
+      letter-spacing: 6px;
+      color: #eedbba;
+      text-shadow: 0 0 20px #5f4a2e, 0 2px 4px #00000080;
+      margin-top: 0.3rem;
+      width: 100%;
+      line-height: 1.2;
+      font-family: 'Times New Roman', 'Georgia', serif;
+      position: relative;
+      display: inline-block;
+    }
+
+    h1::first-letter {
+      font-size: 3rem;
+      color: #cfb176;
+      text-shadow: 0 0 25px #b8943e;
+    }
+
+    .subtitle {
+      font-size: 1rem;
+      color: #b8a272;
+      letter-spacing: 2.5px;
+      margin-top: 0.2rem;
+      font-style: italic;
+      opacity: 0.85;
+    }
+
+    /* Сетка досье */
+    .dossier-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem 2.8rem;
+    }
+
+    .profile-photo-area {
+      grid-column: span 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid #5f5036;
+      background: #15110b;
+      padding: 1.5rem;
+      border-radius: 3px;
+      box-shadow: inset 0 0 30px #00000080, 0 8px 20px rgba(0,0,0,0.5);
+      transition: box-shadow 0.3s ease;
+    }
+
+    .profile-photo-area:hover {
+      box-shadow: inset 0 0 40px #00000090, 0 10px 25px rgba(0,0,0,0.7), 0 0 15px rgba(180, 140, 60, 0.3);
+    }
+
+    .photo-placeholder {
+      width: 100%;
+      aspect-ratio: 1 / 1.2;
+      background: #1f1a11;
+      border: 1px dashed #8b7a5c;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #5c4f37;
+      font-size: 0.8rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+      background-image: linear-gradient(45deg, #2a2419 2%, transparent 5%);
+      position: relative;
+      overflow: hidden;
+      border-radius: 2px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+    }
+
+    .photo-placeholder::before {
+      content: "";
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.03) 50%, transparent 70%);
+      animation: photoShine 6s infinite linear;
+      pointer-events: none;
+    }
+
+    @keyframes photoShine {
+      0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+      100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+    }
+
+    .photo-caption {
+      font-size: 0.75rem;
+      color: #8b7a52;
+      border-top: 1px solid #3a3322;
+      padding-top: 0.5rem;
+      width: 100%;
+      text-align: center;
+      letter-spacing: 1.5px;
+      font-weight: 500;
+    }
+
+    .info-cluster {
+      display: flex;
+      flex-direction: column;
+      gap: 1.4rem;
+    }
+
+    .field {
+      border-left: 4px solid #8a6d3b;
+      padding-left: 1.2rem;
+      background: rgba(12, 10, 7, 0.6);
+      transition: border-color 0.3s, background 0.3s;
+      border-radius: 0 3px 3px 0;
+    }
+
+    .field:hover {
+      border-left-color: #c9a44b;
+      background: rgba(18, 14, 9, 0.8);
+      box-shadow: 0 0 15px rgba(0,0,0,0.3);
+    }
+
+    .field-label {
+      font-size: 0.7rem;
+      letter-spacing: 2.5px;
+      color: #b8984b;
+      text-transform: uppercase;
+      margin-bottom: 0.4rem;
+      font-weight: 600;
+      text-shadow: 0 0 8px #000000;
+    }
+
+    .field-value {
+      font-size: 1.1rem;
+      color: #f5e7cc;
+      font-weight: 500;
+      word-break: break-word;
+      background: #1f1a11;
+      padding: 0.4rem 0.8rem;
+      border-radius: 3px;
+      min-height: 2rem;
+      box-shadow: inset 0 1px 4px rgba(0,0,0,0.5);
+      border: 1px solid #3a3322;
+      line-height: 1.5;
+      transition: all 0.3s ease;
+    }
+
+    .field-value:hover {
+      background: #241e13;
+      color: #fff4dd;
+    }
+
+    .redacted {
+      color: #c46a56;
+      font-style: italic;
+      background: #1e1310;
+      border-color: #4a2520;
+      text-shadow: 0 0 5px #5f2a20;
+    }
+
+    /* Раздел связей / улик */
+    .evidence-board {
+      margin-top: 0.5rem;
+      border: 1px solid #4a3c27;
+      background: #0f0c07;
+      padding: 1.4rem 1.8rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.8rem;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+      border-radius: 4px;
+      box-shadow: inset 0 0 25px rgba(0,0,0,0.7), 0 6px 18px rgba(0,0,0,0.6);
+      overflow: hidden;
+    }
+
+    .evidence-board::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(200, 150, 70, 0.03) 2px, rgba(200, 150, 70, 0.03) 4px);
+      pointer-events: none;
+    }
+
+    .connections {
+      display: flex;
+      gap: 2.2rem;
+      flex-wrap: wrap;
+      position: relative;
+      z-index: 1;
+    }
+
+    .connection-item {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+
+    .pin {
+      width: 12px;
+      height: 12px;
+      background: #a8844b;
+      border-radius: 50%;
+      box-shadow: 0 0 15px #daa520, 0 0 30px #8b6914;
+      border: 1px solid #e0b860;
+      animation: pinGlow 2s infinite alternate;
+    }
+
+    @keyframes pinGlow {
+      0% { box-shadow: 0 0 12px #daa520, 0 0 25px #8b6914; }
+      100% { box-shadow: 0 0 20px #f5c542, 0 0 35px #aa8220; }
+    }
+
+    .red-string {
+      width: 45px;
+      height: 1px;
+      background: #b8543e;
+      box-shadow: 0 0 10px #a13020, 0 0 20px #601010;
+      transform: rotate(0deg);
+      opacity: 0.9;
+    }
+
+    .conn-text {
+      font-size: 0.9rem;
+      color: #d4b87a;
+      font-weight: 500;
+      letter-spacing: 1px;
+      text-shadow: 0 0 6px #000000;
+    }
+
+    .classified-stamp {
+      font-size: 1.3rem;
+      color: #c0402a;
+      border: 2px solid #c0402a;
+      padding: 0.4rem 1.4rem;
+      transform: rotate(-4deg);
+      font-weight: bold;
+      letter-spacing: 3px;
+      opacity: 0.85;
+      background: rgba(40, 20, 15, 0.5);
+      box-shadow: 0 0 15px rgba(180, 50, 30, 0.4);
+      text-shadow: 0 0 10px #802010;
+      position: relative;
+      z-index: 1;
+      transition: all 0.3s ease;
+    }
+
+    .classified-stamp:hover {
+      opacity: 1;
+      box-shadow: 0 0 25px rgba(220, 60, 30, 0.6);
+      color: #e05035;
+    }
+
+    .notes-section {
+      background: #130f0a;
+      border: 1px dashed #6b5a38;
+      padding: 1.2rem 1.8rem;
+      margin-top: 0.3rem;
+      font-size: 0.9rem;
+      color: #c9b27c;
+      font-style: italic;
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      border-radius: 3px;
+      box-shadow: inset 0 0 15px rgba(0,0,0,0.5);
+      transition: all 0.3s ease;
+    }
+
+    .notes-section:hover {
+      background: #18140d;
+      border-color: #8b784a;
+    }
+
+    .notes-icon {
+      font-size: 1.6rem;
+      filter: drop-shadow(0 0 6px #6b4e2a);
+    }
+
+    /* Адаптив */
+    @media (max-width: 650px) {
+      .dossier-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+      body {
+        padding: 0.8rem;
+      }
+      .case-board {
+        padding: 1.5rem;
+      }
+      h1 {
+        font-size: 1.8rem;
+        letter-spacing: 4px;
+      }
+      .case-id {
+        font-size: 1.4rem;
+        letter-spacing: 2px;
+      }
+      .evidence-board {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+
+    /* Подвал */
+    .footer-details {
+      display: flex;
+      justify-content: space-between;
+      color: #6b5d3a;
+      font-size: 0.7rem;
+      border-top: 1px dotted #4a3f2b;
+      padding-top: 1.2rem;
+      letter-spacing: 1.5px;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      opacity: 0.8;
+    }
+
+    .footer-details span {
+      transition: color 0.3s ease;
+    }
+
+    .footer-details span:hover {
+      color: #b8a060;
+    }
+
+    /* Добавим стили для скроллбара в тему */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #1a150d;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #5a4a2a;
+      border-radius: 3px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #7a653b;
+    }
+  </style>
+</head>
+<body>
+  <div class="case-board">
+    
+    <!-- Шапка: номер дела и гриф -->
+    <div class="case-header">
+      <span class="case-id">ДЕЛО № 4</span>
+      <span class="stamp">📋 конфиденциально</span>
+      <h1>Мария Порва</h1>
+      <div class="subtitle">◆ объект наблюдения · досье активно ◆</div>
+    </div>
+
+    <!-- Основная сетка: фото и ключевые данные -->
+    <div class="dossier-grid">
+      
+      <!-- БЛОК ФОТОГРАФИИ: ЗАМЕНИТЬ ИЗОБРАЖЕНИЕ ПО ЖЕЛАНИЮ -->
+      <div class="profile-photo-area">
+        <div class="photo-placeholder">
+          <!-- ЗАПОЛНИТЬ: ВСТАВЬТЕ ФОТО ЕКАТЕРИНЫ ПАШКОВОЙ -->
+          <div class="photo-placeholder">
+            <img src="photo_2026-05-05_21-16-07.jpg" alt="Екатерина Пашкова" style="width:100%; height:100%; object-fit:cover;">
+          </div>
+          <span style="font-size:0.75rem; margin-top:0.3rem;"></span>
+        </div>
+        <div class="photo-caption">● субъект «К.П.» ● последнее обновление: сегодня</div>
+      </div>
+
+      <!-- ПРАВЫЙ БЛОК: ОСНОВНАЯ ИНФОРМАЦИЯ (ЗАПОЛНИТЬ ДАННЫЕ) -->
+      <div class="info-cluster">
+        <div class="field">
+          <div class="field-label">📌 Полное имя / псевдоним</div>
+          <!-- ЗАПОЛНИТЬ: Имя и возможные псевдонимы -->
+          <div class="field-value">Порва Мария Дмитриевна (Касторная)</div>
+        </div>
+        <div class="field">
+          <div class="field-label">📅 Дата рождения / возраст</div>
+          <!-- ЗАПОЛНИТЬ: Дата рождения, возраст -->
+          <div class="field-value">26.12.2007, 18 лет</div>
+        </div>
+        <div class="field">
+          <div class="field-label">📍 Место жительства / регион</div>
+          <!-- ЗАПОЛНИТЬ: Город, район, страна -->
+          <div class="field-value">БЕЛГОРОДСКАЯ ОБЛ, Г БЕЛГОРОД</div>
+        </div>
+        <div class="field">
+          <div class="field-label">⚡ Род деятельности</div>
+          <!-- ЗАПОЛНИТЬ: Профессия, увлечения, статус -->
+          <div class="field-value">Отсутствует</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ВТОРОЙ РЯД: ДОПОЛНИТЕЛЬНЫЕ ДАННЫЕ, КОТОРЫЕ НУЖНО ЗАПОЛНИТЬ -->
+    <div class="dossier-grid" style="margin-top: 0.3rem;">
+      <div class="field">
+        <div class="field-label">🔍 Телефон Марии</div>
+        <!-- ЗАПОЛНИТЬ: Образование, сертификаты, умения -->
+        <div class="field-value">+79517687248</div>
+      </div>
+      <div class="field">
+        <div class="field-label">📞 Контактные данные </div>
+        <!-- ЗАПОЛНИТЬ: Телефон, email, соцсети (можно оставить засекреченным) -->
+        <div class="field-value redacted">ВК	https://vk.com/id569840825<br>
+          Telegram	https://t.me/Mashka_mousse<br>
+          Whatsapp	https://wa.me/+79517687248<br>
+          Email MARIAPORVA@ICLOUD.COM BELORUSOVA@VK.COM
+
+        </div>
+      </div>
+      <div class="field">
+        <div class="field-label">🧬 Паспортные данные</div>
+        <!-- ЗАПОЛНИТЬ: Хобби, внешние черты, стиль -->
+        <div class="field-value">Серия и номер: 1421972844<br>
+          СНИЛС: 18898270656<br>
+          ИНН: 312118693830
+        </div>
+      </div>
+      <div class="field">
+        <div class="field-label">📂 Екатерина в телефонных книгах</div>
+        <!-- ЗАПОЛНИТЬ: Родственники, коллеги, важные персоны -->
+        <div class="field-value">MARIIA KASTORNAIA DMITRIEVNA MARIIA PORVA ПОРВА МАРИЯ ДМИТРИЕВНА Клыкастая Мама Маша Мария Мария Белорусова Мария Дмитриевна П. Мафулик Маша Маша Порва Машб Машенция машка Машка😝💜 Машуня Машуня😘 Мышонок Мышонок ♡</div>
+      </div>
+    </div>
+
+    <!-- БЛОК "УЛИКИ И СВЯЗИ" (ВИЗУАЛЬНАЯ ДЕТЕКТИВНАЯ ДОСКА) -->
+    <div class="evidence-board">
+      <div class="connections">
+        <div class="connection-item">
+          <span class="pin"></span>
+          <span class="conn-text">📁 Личное дело</span>
+          <span class="red-string"></span>
+        </div>
+        <div class="connection-item">
+          <span class="pin"></span>
+          <span class="conn-text">📸 Архив фото</span>
+          <span class="red-string"></span>
+        </div>
+        <div class="connection-item">
+          <span class="pin"></span>
+          <span class="conn-text">🔗 Проект "Феникс"</span>
+        </div>
+      </div>
+      <div class="classified-stamp">ДОПУСК ОГРАНИЧЕН</div>
+    </div>
+
+    <!-- ПОЛЕ ДЛЯ ДЕТЕКТИВНЫХ ЗАМЕТОК (СВОБОДНЫЙ ТЕКСТ) -->
+    <div class="notes-section">
+      <span class="notes-icon">🕵️</span>
+      <div>
+        <strong>Заметки следователя:</strong> 
+        <!-- ЗАПОЛНИТЬ: ЛЮБАЯ ДОПОЛНИТЕЛЬНАЯ ИНФОРМАЦИЯ, ОПИСАНИЕ ХАРАКТЕРА, ИСТОРИЯ -->
+        <span style="color:#cfb27c;"> Большое количество разных фамилий и скрытых подарков в телеграмме. В целом большое количество информации скрыто, человек целенаправленно закрывает профили, скрывает аватарки и так далее.</span>
+      </div>
+    </div>
+
+    <!-- ПОДВАЛ: СТАТУС РАССЛЕДОВАНИЯ -->
+    <div class="footer-details">
+      <span>📅 обновлено: 16.05.2026</span>
+      <span>🔒 статус: активно</span>
+      <span>📋 следователь: инспектор Пес</span>
+    </div>
+
+    <!-- 
+      ==========================================
+      МЕСТА ДЛЯ ЗАПОЛНЕНИЯ ИНФОРМАЦИИ:
+      1. Фото (можно заменить div.photo-placeholder на img)
+      2. Все поля с классом field-value (имя, дата, город, деятельность)
+      3. Навыки, контакты, особые приметы, связанные лица
+      4. Текстовый блок "Заметки следователя"
+      5. При желании изменить данные в подвале (дата, следователь)
+      ==========================================
+    -->
+  </div>
+</body>
+</html>
